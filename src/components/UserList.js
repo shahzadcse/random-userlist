@@ -1,33 +1,31 @@
-import React, { useContext } from "react";
-
+import { useContext } from "react";
 import UserItem from "./UserItem";
 import UserContext from "../context/UserContext";
+import Pagination from "./Pagination";
 const UserList = (props) => {
   //grab data from global context
-  const users = useContext(UserContext);
-  console.log(users);
+  const { users } = useContext(UserContext);
+  //console.log(props);
   return (
     <div>
-      {users !== null ? (
-        users.map((user, index) => {
-          return (
-            <>
-              <UserItem
-                name={user.name}
-                username={user.login.username}
-                email={user.email}
-                dob={user.dob}
-                address={user.location}
-                phone={user.phone}
-                image={user.picture.medium}
-                key={index}
-              />
-            </>
-          );
-        })
-      ) : (
-        <p>Loading .... </p>
-      )}
+      <div className="container">
+        <div className="list-wrapper">
+          <ul className="list">
+            {users !== null ? (
+              users.map((user, index) => {
+                return (
+                  <li className="list-item" key={index}>
+                    <UserItem user={user} />
+                  </li>
+                );
+              })
+            ) : (
+              <p> Loading....</p>
+            )}
+          </ul>
+          <Pagination />
+        </div>
+      </div>
     </div>
   );
 };

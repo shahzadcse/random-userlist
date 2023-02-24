@@ -2,29 +2,49 @@ import React, { createContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
 
-export default UserContext;
-
-const url = "https://randomuser.me/api/?results=10";
-
-export const UserProvider = (props) => {
+export const UserContextProvider = (props) => {
   const [users, setUsers] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  //fetch Data
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const [url, setUrl] = useState(
+    `https://randomuser.me/api/?page=${page}&results=10&seed=abc${page}`
+  );
+
+  const fetchAPI = async () => {
+    let response = await fetch(url);
+    response = await response.json();
+    setIsLoading(true);
+    setUsers(response.results);
+    setTotalPages(response.info.results);
+  };
+
+  //fetch Data from api
   useEffect(() => {
-    async function fetchAPI() {
-      let response = await fetch(url);
-      response = await response.json();
-      setUsers(response.results);
-      setLoading(true);
-    }
     try {
       fetchAPI();
     } catch (error) {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }, []);
+  }, [url]);
+
   return (
-    <UserContext.Provider value={users}>{props.children}</UserContext.Provider>
+    <>
+      <UserContext.Provider
+        value={{
+          users,
+          isLoading,
+          page,
+          totalPages,
+          setPage,
+          setUrl,
+        }}
+      >
+        {props.children}
+      </UserContext.Provider>
+    </>
   );
 };
+export default UserContext;

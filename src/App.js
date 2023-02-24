@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { useContext } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { UserContextProvider } from "./context/UserContext";
 import UserContext from "./context/UserContext";
 import "./App.css";
 import UserList from "./components/UserList";
-import UserDetails from "./components/UserDetails";
-import UserItem from "./components/UserItem";
-import { UserProvider } from "./context/UserContext";
 
 function App() {
-  // Initialize state
+  // get context of users
+  const users = useContext(UserContext);
 
   return (
     <>
       <BrowserRouter>
-        <UserProvider>
+        <UserContextProvider>
           <h1>Random User List</h1>
+          {users && <UserList users={users} />}
           <Routes>
-            <Route path="/" element={<UserList />} />
-            <Route path="/details" element={<UserItem />} />
+            <Route path="/" element={<UserList users={users} />} />
           </Routes>
-        </UserProvider>
+        </UserContextProvider>
       </BrowserRouter>
     </>
   );

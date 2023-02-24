@@ -1,0 +1,27 @@
+.pagination {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.pagination span {
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #f2f2f2;
+  width: 20px;
+  height: 20px;
+  margin: 1px;
+  text-align: center;
+}
+
+.pagination span.pagination__selected {
+  background-color: #222;
+  color: #fff;
+}
+
+.pagination__disabled {
+  opacity: 0;
+}
